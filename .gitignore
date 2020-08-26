@@ -4,4 +4,9 @@ jspm_packages
 
 # Serverless directories
 .serverless
+
+# local history extension
 .history
+
+# Project Files
+config.js

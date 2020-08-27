@@ -26,9 +26,9 @@ api.post("/register", async (req, res) => {
 	try {
 		const user = new UserModel(req.body)
 		await user.save()
-		return { message:"Register success", data:{user} }
+		return { message: "Register success", data: { user } }
 	} catch (e) {
-		await console.log(e)
+		console.error(e)
 		return res.error({ status: "ERROR", debugInfo: e })
 	}
 })

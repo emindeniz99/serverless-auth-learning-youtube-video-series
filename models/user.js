@@ -9,13 +9,13 @@ const UserSchema = mongoose.Schema(
         name: {
             type: String,
             trim: true,
-            required: true
+            required: [true,"Name is Required"]
         },
         email: {
             type: String,
             trim: true,
             lowercase: true,
-            required: true,
+            required: [true,"Email is Required"],
             index: {
                 unique: true
             },
@@ -23,7 +23,7 @@ const UserSchema = mongoose.Schema(
             maxlength: [64, "Email can't be longer than 64 characters."],
         },
         password: {
-            required: true,
+            required: [true,"Password is Required"],
             type: String,
             select: false
         }

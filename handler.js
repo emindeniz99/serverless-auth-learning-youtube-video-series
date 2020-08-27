@@ -11,6 +11,19 @@ mongoose.connect(MONGO_CONNECTION_STRING, {
 	useUnifiedTopology: true,
 })
 
+const errorFormatter = (error) => {
+	let errorMessages = Object.keys(error.errors).map((key) => {
+		return {
+			field: key,
+			message: error.errors[key].message,
+		}
+	})
+	return {
+		errorType: error._message,
+		errorMessages
+	}
+}
+
 // Define a route
 
 api.get("/status", async (req, res) => {
@@ -29,7 +42,7 @@ api.post("/register", async (req, res) => {
 		return { message: "Register success", data: { user } }
 	} catch (e) {
 		console.error(e)
-		return res.error({ status: "ERROR", debugInfo: e })
+		return res.error({ status: "Something went wrong", debugInfo: errorFormatter(e) })
 	}
 })
 

@@ -1,39 +1,41 @@
 "use strict"
+const api = require("lambda-api")()
 
 const mongoose = require("mongoose")
 
 const { MONGO_CONNECTION_STRING } = require("./config")
 
-module.exports.hello = async (event) => {
-	const mongoose = require("mongoose")
-	mongoose.connect(MONGO_CONNECTION_STRING, {
-		useNewUrlParser: true,
-		useUnifiedTopology: true,
-	})
+const UserModel = require("./models/user")
+mongoose.connect(MONGO_CONNECTION_STRING, {
+	useNewUrlParser: true,
+	useUnifiedTopology: true,
+})
 
-	// Model - Table Structure
-	const Cat = mongoose.models["Cat"] || mongoose.model("Cat", { name: String })
+// Define a route
 
-	// Create an object
-	const kitty = new Cat({ name: "Zildjian"+ ( (Math.random()*100)%100 ) })
+api.get("/status", async (req, res) => {
+	return { status: "Services is UP" }
+})
 
-	//
-	await kitty.save()
+api.post("/login", async (req, res) => {
+	return { status: "not implemented yet" }
+})
 
-	return {
-		statusCode: 200,
-		body: JSON.stringify(
-			{
-				message:
-					"Go Serverless v1.0! Your function executed successfully!",
-				 kitty
-				// input: event,
-			},
-			null,
-			2
-		),
+api.post("/register", async (req, res) => {
+	// console.log(req)
+	try {
+		const user = new UserModel(req.body)
+		await user.save()
+		return { message:"Register success", data:{user} }
+	} catch (e) {
+		await console.log(e)
+		return res.error({ status: "ERROR", debugInfo: e })
 	}
+})
 
-	// Use this code if you don't use the http event with the LAMBDA-PROXY integration
-	// return { message: 'Go Serverless v1.0! Your function executed successfully!', event };
+// Declare your Lambda handler
+module.exports.hello = async (event, context) => {
+	// Run the request
+	// console.log("EVENT LOG -->", event)
+	return await api.run(event, context)
 }

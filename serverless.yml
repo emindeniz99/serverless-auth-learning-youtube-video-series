@@ -65,11 +65,14 @@ functions:
 #    Check the event documentation for details
     events:
       - http:
-          path: /
+          path: /status
           method: get
       - http:
-          path: /user
-          method: get
+          path: /login
+          method: post
+      - http:
+          path: /register
+          method: post    
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)

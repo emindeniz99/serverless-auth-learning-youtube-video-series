@@ -27,7 +27,7 @@ const errorFormatter = (error) => {
 // Define a route
 
 api.get("/status", async (req, res) => {
-	return { status: "Services is UP" }
+	return { status: "Services is up" }
 })
 
 api.post("/login", async (req, res) => {
